@@ -12,6 +12,23 @@ export class App extends Component {
     filter: '',
   }
 
+  componentDidMount(){
+
+    const contactsFromLStorage = localStorage.getItem('contacts');
+    const parsedContactsFromLStorage = JSON.parse(contactsFromLStorage);
+
+    if (contactsFromLStorage) {
+      this.setState({contacts: parsedContactsFromLStorage});
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState){
+
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts',JSON.stringify(this.state.contacts));
+    }
+  }
+  
   onFilterInputChange = (evt) => this.setState({filter: evt.target.value});
 
   onClickToAddBtn = (form_data) => {
@@ -33,22 +50,7 @@ export class App extends Component {
 
   filterContacts = () => {return this.state.contacts.filter((contact) => contact.name.toLowerCase().includes(this.state.filter.toLowerCase().trim()))};
 
-  componentDidMount(){
 
-    const contactsFromLStorage = localStorage.getItem('contacts');
-    const parsedContactsFromLStorage = JSON.parse(contactsFromLStorage);
-
-    if (contactsFromLStorage) {
-      this.setState({contacts: parsedContactsFromLStorage});
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState){
-
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts',JSON.stringify(this.state.contacts));
-    }
-  }
 
   render(){ 
     return (
